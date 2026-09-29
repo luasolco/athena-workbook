@@ -153,7 +153,7 @@
       el("ol", { cls: "outline-list" }, b.items.map(function (it, i) {
         return el("li", null, [el("span", { cls: "ol-num", text: (i + 1 < 10 ? "0" : "") + (i + 1) }), el("span", { cls: "ol-t", html: it })]);
       })),
-      el("figcaption", { text: b.credit })
+      b.credit ? el("figcaption", { text: b.credit }) : null
     ]);
   };
   R.q = function (b) { return textField(qKey(), b.text, b); };

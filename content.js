@@ -193,7 +193,7 @@ window.WORKBOOK = (function () {
       { t: "p", html: "These elements are essential for meaningful outcomes and for honoring the shared commitment we are making to one another." },
       { t: "p", html: "Everyone brings wisdom, insight, and lived experience. Your voice contributes to the strength of the whole—and everyone deserves the benefit of our collective presence and care." },
       { t: "h3", text: "Below is the program outline:", u: true },
-      { t: "outline", items: ["Welcome<br>& Introduction", "Predictive<br>Index (PI)", "Live<br>Authentically", "Learn<br>Constantly", "Build<br>Relationships", "Foster<br>Collaboration", "Act<br>Courageously", "Advocate<br>Fiercely", "Give Back", "Celebrate"], credit: "© 2023 ATHENA INTERNATIONAL" },
+      { t: "outline", items: ["Welcome<br>& Introduction", "Predictive<br>Index (PI)", "Live<br>Authentically", "Learn<br>Constantly", "Build<br>Relationships", "Foster<br>Collaboration", "Act<br>Courageously", "Advocate<br>Fiercely", "Give Back", "Celebrate"] },
       { t: "h3", text: "Certificate of Completion", u: true },
       { t: "p", html: "Participants who attend at least 8 sessions and complete the post-program survey will receive a Certificate of Completion, recognizing their commitment to the learning journey." },
       { t: "note", html: "Reclaim your voice—at your own pace.<br>Honor your authentic self.<br>Inner work shapes outer impact.<br>Together, we rise." },
