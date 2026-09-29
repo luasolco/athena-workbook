@@ -384,7 +384,7 @@ window.WORKBOOK = (function () {
         strengths: ["Calm and stable leadership style", "Thoughtful listener to direct reports", "Builds solid group processes", "Gives team time to process"],
         cautions: ["May appear uncomfortable with change", "May appear to over-analyze situations or be too cautious", "May struggle under time pressure", "May be too comfortable with the familiar and slow to adopt new ideas"],
         tips: ["Clarify timelines and focus on creating a sense of urgency among team members", "Manage team’s time wisely - start early and leave time for the unexpected", "Keep others informed when progress is made"] }),
-      picard({ factor: "Formality", letter: "D", arrow: "More intense need to have structure", side: "Right", tabs: ["", "VERY", "EXTREMELY"], sel: 0,
+      picard({ factor: "Formality", letter: "D", arrow: "More intense need to have structure", side: "Right", tabs: ["MODERATELY", "VERY", "EXTREMELY"], sel: 0,
         strengths: ["Strong discipline and execution; emphasis on quality", "Builds team structure and respect for the plan", "Focuses team on how to get things done right", "Organized and thorough follow-up with direct reports"],
         cautions: ["May be uncomfortable in ambiguous management situations", "May struggle with situations that call for team and personal flexibility", "May be seen as a perfectionist rather than a producer"],
         tips: ["Learn how to move forward when “enough” information is available", "Ask yourself: Is it worth this much time and process?", "Recognize and respect flexibility shown by direct reports"] }),
