@@ -122,7 +122,7 @@
       return el("header", { cls: "chapter" }, [
         el("p", { cls: "chapter-eyebrow" }, [el("span", { html: b.title.replace(/<br\s*\/?>/g, " ") })]),
         el("h2", { cls: "chapter-title", id: "h-" + ctx.step.id, html: b.sub }),
-        b.pi ? el("p", { cls: "chapter-pi" }, [el("img", { src: "assets/icons/pi.png", alt: "Predictive Index", width: 26, height: 26 })]) : null
+        b.pi ? el("p", { cls: "chapter-pi" }, [el("img", { src: "assets/icons/pi.png?v=2", alt: "Predictive Index", width: 26, height: 26 })]) : null
       ]);
     }
     return el("header", { cls: "chapter solo" }, [
@@ -164,7 +164,7 @@
   };
   R.panel = function (b) {
     var head = [];
-    if (b.tone === "pi") head.push(el("img", { src: "assets/icons/pi.png", alt: "Predictive Index", cls: "panel-pi-logo", width: 34, height: 34 }));
+    if (b.tone === "pi") head.push(el("img", { src: "assets/icons/pi.png?v=2", alt: "Predictive Index", cls: "panel-pi-logo", width: 34, height: 34 }));
     head.push(el("p", { cls: "panel-title", html: b.title }));
     if (b.sub) head.push(el("p", { cls: "panel-sub", html: b.sub }));
     var box = el("section", { cls: "panel panel-" + b.tone }, [el("div", { cls: "panel-head" }, head)]);
