@@ -142,7 +142,7 @@
   R.foot = function (b) { return el("p", { cls: "foot", html: b.text }); };
   R.lead = function (b) { return el("div", { cls: "lead" }, [el("h3", { html: b.title }), el("p", { html: b.html })]); };
   R.metaphor = function (b) { return el("div", { cls: "metaphor" }, [el("p", { cls: "metaphor-title", html: b.title }), el("p", { html: b.html })]); };
-  R.mindwire = function () { return el("div", { cls: "mindwire" }, [el("img", { src: "assets/icons/mindwire.png", alt: "MindWire", width: 108, height: 28, loading: "lazy" })]); };
+  R.mindwire = function () { return el("div", { cls: "mindwire" }, [el("img", { src: "assets/icons/mindwire.webp", alt: "MindWire", width: 396, height: 126, loading: "lazy" })]); };
   R.img = function (b) {
     var img = el("img", { src: b.src, alt: b.alt, width: b.w, height: b.h, loading: "lazy", decoding: "async" });
     var btn = el("button", { type: "button", cls: "zoom", "aria-label": "Enlarge image: " + b.alt.slice(0, 60), onclick: function () { openLightbox(b.src, b.alt); } }, [img]);

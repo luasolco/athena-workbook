@@ -197,7 +197,7 @@ main { padding: 56px clamp(16px, 5vw, 72px) 96px; min-width: 0; outline: none; }
 .note.light { background: var(--sand); color: var(--ink) !important; font: 400 16.5px/1.75 var(--sans); text-align: left; padding: 26px 28px; border-left: 2px solid var(--bronze); }
 .note.light::after { display: none; }
 .mindwire { display: flex; justify-content: flex-end; align-items: center; gap: 10px; margin: 36px 0 0 !important; max-width: none !important; }
-.mindwire img { width: 96px; }
+.mindwire img { width: 160px; height: auto; mix-blend-mode: multiply; }
 .figure { margin: 28px 0 36px; }
 .zoom { position: relative; display: block; width: 100%; padding: 0; border: 1px solid var(--line); background: #fff; cursor: zoom-in; }
 .zoom img { display: block; width: 100%; }
