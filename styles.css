@@ -187,15 +187,14 @@ main { padding: 56px clamp(16px, 5vw, 72px) 96px; min-width: 0; outline: none; }
 .lines { margin: 0 0 22px; display: grid; gap: 4px; }
 .lines div { padding: 8px 0 8px 18px; border-left: 1px solid var(--bronze); font-size: 16px; }
 .lead { margin-top: 8px; }
-.foot { font: 500 11px var(--display) !important; letter-spacing: .18em; text-transform: uppercase; color: var(--gray) !important; margin-top: 48px !important; text-align: center; }
-.pull { font: italic 300 clamp(24px, 3vw, 32px)/1.35 var(--serif); text-align: center; margin: 56px auto !important; max-width: 640px; }
-.center { text-align: center; }
-.paper p.center { margin-left: auto; margin-right: auto; }
+.foot { font: 500 11px var(--display) !important; letter-spacing: .18em; text-transform: uppercase; color: var(--gray) !important; margin-top: 48px !important; text-align: left; }
+.pull { font: italic 300 clamp(24px, 3vw, 32px)/1.35 var(--serif); text-align: left; margin: 56px 0 !important; max-width: 640px; }
+.center { text-align: left; }
 .metaphor { position: relative; margin: 8px 0 40px; padding: 30px 0 0 0; text-align: left; }
 .metaphor::before { content: ""; position: absolute; top: 0; left: 0; width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-bottom: 14px solid var(--orange); }
 .metaphor p { margin: 0 0 8px; font: italic 300 clamp(21px, 2.4vw, 26px)/1.45 var(--serif); }
 .metaphor .metaphor-title { font: 500 11.5px var(--display) !important; font-style: normal; letter-spacing: .2em; text-transform: uppercase; margin-bottom: 14px; }
-.note { position: relative; background: var(--blue); color: var(--cream) !important; padding: 48px 40px; text-align: center; font: italic 300 clamp(22px, 2.6vw, 28px)/1.5 var(--serif); margin: 40px 0; overflow: hidden; }
+.note { position: relative; background: var(--blue); color: var(--cream) !important; padding: 48px 40px; text-align: left; font: italic 300 clamp(22px, 2.6vw, 28px)/1.5 var(--serif); margin: 40px 0; overflow: hidden; }
 .note::after { content: ""; position: absolute; right: 22px; bottom: 22px; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 17px solid var(--orange); }
 .note.light { background: var(--sand); color: var(--ink) !important; font: 400 16.5px/1.75 var(--sans); text-align: left; padding: 26px 28px; border-left: 2px solid var(--bronze); }
 .note.light::after { display: none; }
@@ -639,7 +638,7 @@ main { padding: 56px clamp(16px, 5vw, 72px) 96px; min-width: 0; outline: none; }
   .qa-q { margin: 0; font: 400 10.5pt/1.4 "Source Serif 4", Georgia, serif; }
   .qa-a { margin: 3px 0 0; white-space: pre-wrap; font: 400 9.5pt/1.55 "Open Sauce One", sans-serif; color: #0C2E40; }
   .pre-wrap { white-space: pre-wrap; }
-  .ps-foot { margin-top: 26px; font: 500 7pt "Poppins", sans-serif; letter-spacing: .18em; text-transform: uppercase; color: #706D6D; text-align: center; }
+  .ps-foot { margin-top: 26px; font: 500 7pt "Poppins", sans-serif; letter-spacing: .18em; text-transform: uppercase; color: #706D6D; text-align: left; }
   .muted { color: #706D6D; }
   .small { font-size: 8pt; }
 }
