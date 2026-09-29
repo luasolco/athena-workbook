@@ -556,9 +556,35 @@
     ["cover", "workbook", "results"].forEach(function (v) { $("#view-" + v).hidden = v !== view; });
     document.body.setAttribute("data-view", view);
   }
+  /* Temporary access gate (client-side only). Stores a hash, never the password. */
+  var GATE_KEY = "athena-lc-access", GATE_HASH = "84cb35182ed960d9c7b9ec0694138363537d300370915b43368a645682887a8d";
+  var pendingHash = null;
+  function unlocked() { try { return window.localStorage.getItem(GATE_KEY) === GATE_HASH; } catch (e) { return sessionUnlocked; } }
+  var sessionUnlocked = false;
+  function sha256(text) {
+    return crypto.subtle.digest("SHA-256", new TextEncoder().encode(text)).then(function (buf) {
+      return Array.prototype.map.call(new Uint8Array(buf), function (b) { return ("0" + b.toString(16)).slice(-2); }).join("");
+    });
+  }
+  function tryEnter(target) {
+    if (unlocked()) { location.hash = target; return; }
+    var inp = $("#cover-pass"), err = $("#cover-pass-err");
+    sha256(inp.value).then(function (h) {
+      if (h !== GATE_HASH) {
+        err.hidden = false; inp.setAttribute("aria-invalid", "true"); inp.focus();
+        return;
+      }
+      sessionUnlocked = true;
+      try { window.localStorage.setItem(GATE_KEY, GATE_HASH); } catch (e) { /* storage blocked */ }
+      err.hidden = true; inp.removeAttribute("aria-invalid"); inp.value = "";
+      location.hash = target;
+    });
+  }
+
   function route() {
     var h = location.hash.replace(/^#\/?/, "");
     var parts = h.split("/");
+    if ((parts[0] === "m" || parts[0] === "results") && !unlocked()) { pendingHash = "#/" + h; parts = [""]; history.replaceState(null, "", location.pathname + location.search + "#/"); }
     if (parts[0] === "m") {
       var mi = WB.modules.map(function (m) { return m.id; }).indexOf(parts[1]);
       if (mi < 0) mi = 0;
@@ -633,6 +659,7 @@
     var name = $("#cover-name");
     if (document.activeElement !== name) name.value = state.name || "";
     var cont = $("#cover-continue"), begin = $("#cover-begin");
+    $("#cover-gate").hidden = unlocked();
     var o = overall();
     if (state.last) {
       var m = WB.modules.filter(function (x) { return x.id === state.last.m; })[0];
@@ -888,7 +915,10 @@
     }
     $$("[data-name-input]").forEach(function (n) { n.value = state.name || ""; n.addEventListener("input", onName); });
 
-    $("#cover-begin").addEventListener("click", function () { location.hash = "#/m/welcome/1"; });
+    $("#cover-begin").addEventListener("click", function () { tryEnter(pendingHash && !state.last ? pendingHash : "#/m/welcome/1"); });
+    $("#cover-continue").addEventListener("click", function (e) { if (!unlocked()) { e.preventDefault(); tryEnter(this.getAttribute("href")); } });
+    $("#cover-pass").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); var c = $("#cover-continue"); tryEnter(!c.hidden ? c.getAttribute("href") : (pendingHash || "#/m/welcome/1")); } });
+    $("#cover-pass").addEventListener("input", function () { $("#cover-pass-err").hidden = true; this.removeAttribute("aria-invalid"); });
     $$("[data-action=print]").forEach(function (b) { b.addEventListener("click", function () { buildSummary(); window.print(); }); });
     $$("[data-action=reset]").forEach(function (b) { b.addEventListener("click", function () {
       if (!window.confirm("Reset the workbook? This permanently erases every answer, score and your progress saved on this device. It cannot be undone.")) return;

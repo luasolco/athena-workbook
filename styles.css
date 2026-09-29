@@ -80,6 +80,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .cover-input { width: 100%; min-height: 50px; padding: 10px 0; border: 0; border-bottom: 1px solid color-mix(in srgb, var(--cream) 40%, transparent); background: transparent; color: var(--cream); font: 300 24px var(--serif); }
 .cover-input:focus { outline: none; border-bottom-color: var(--bronze); }
 .cover-input::placeholder { color: color-mix(in srgb, var(--cream) 45%, var(--blue)); }
+.cover-gate { margin-top: 28px; }
+.cover-err { margin: 10px 0 0; font: 500 13.5px var(--sans); color: var(--orange); }
 .cover-actions { display: grid; gap: 10px; margin-top: 30px; }
 .cover-actions .btn { width: 100%; }
 #cover-begin { justify-content: center; }

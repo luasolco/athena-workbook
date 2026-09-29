@@ -34,6 +34,11 @@
       <div class="cover-panel">
         <label class="cover-label" for="cover-name">Your name <span>optional, shown on your summary</span></label>
         <input id="cover-name" class="cover-input" type="text" autocomplete="name" data-name-input placeholder="Participant name">
+        <div id="cover-gate" class="cover-gate">
+          <label class="cover-label" for="cover-pass">Access password <span>provided by your facilitator</span></label>
+          <input id="cover-pass" class="cover-input" type="password" autocomplete="current-password" aria-describedby="cover-pass-err" placeholder="Password">
+          <p id="cover-pass-err" class="cover-err" role="alert" hidden>That password is not correct. Please try again.</p>
+        </div>
         <div class="cover-actions">
           <a id="cover-continue" class="btn btn-gold btn-lg" href="#/" hidden>
             <span><small>Continue where you left off · <span id="cover-pct"></span></small><span id="cover-continue-where"></span></span>
