@@ -1089,8 +1089,7 @@ window.WORKBOOK = (function () {
       { t: "qs", items: ["What patterns of growth stand out most clearly?", "Which ATHENA Principles feel more embodied now?", "How will you continue practicing these skills beyond the program?"] },
       { t: "quote", html: "Leadership is not a destination—it is a lived, evolving practice.<br>This reflection marks a meaningful moment in that journey." },
       { t: "h3", text: "Guiding reflection questions:", u: true },
-      { t: "qs", items: ["What shifted in your awareness, not just your behavior?", "Where did this growth show up in conversations, decisions, or relationships?", "What practices, support, or experiences contributed to this growth?"] },
-      { t: "foot", text: "© ATHENA INTERNATIONAL" }
+      { t: "qs", items: ["What shifted in your awareness, not just your behavior?", "Where did this growth show up in conversations, decisions, or relationships?", "What practices, support, or experiences contributed to this growth?"] }
     ] }
   ] });
 

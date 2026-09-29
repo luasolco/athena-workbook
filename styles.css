@@ -142,6 +142,7 @@ body[data-view="cover"] #shell { display: none; }
 .side-note { margin: 0; font: 400 12.5px/1.5 var(--sans); color: var(--gray); }
 .reset { justify-self: start; background: none; border: 0; padding: 4px 0; color: var(--gray); font: 500 12px var(--sans); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 .reset:hover { color: var(--blue); }
+.side-copy { margin: 10px 0 0; font: 500 10px var(--display); letter-spacing: .18em; color: var(--gray); }
 .scrim { display: none; }
 main { padding: 56px clamp(16px, 5vw, 72px) 96px; min-width: 0; outline: none; }
 #view-workbook, .results { max-width: 980px; margin: 0 auto; }
