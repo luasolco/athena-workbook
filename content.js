@@ -8,6 +8,16 @@
 window.WORKBOOK = (function () {
   "use strict";
 
+  /* Predictive Index factors, drawn as HTML/SVG diagrams (pages 18-23) */
+  var PI_FACTORS = [
+    { f: "a", name: "Dominance", letter: "A", low: "Collaborative", high: "Independent", drive: "The drive to exert one’s influence on people / events", left: "More intense need to collaborate", right: "More intense need to make an impact" },
+    { f: "b", name: "Extraversion", letter: "B", low: "Reserved", high: "Sociable", drive: "The drive for social interaction with other people", left: "More intense need to think it through alone", right: "More intense need to talk it through w/others" },
+    { f: "c", name: "Patience", letter: "C", low: "Driving", high: "Steady", drive: "The drive for consistency and stability", left: "More intense need for variety", right: "More intense need for familiarity" },
+    { f: "d", name: "Formality", letter: "D", low: "Flexible", high: "Precise", drive: "The drive to conform to rules and structure", left: "More intense need to have flexibility", right: "More intense need to have structure" }
+  ];
+  /* Example PI chart (sigma, -3 to +3): factors A-D, then E (Subjective / Objective) */
+  var PI_EXAMPLE = { e: ["Subjective", "Objective"], self: [2.85, 1.3, -2.2, -2.05, -2.6], concept: [1.4, 1.65, -2, -1.05, 0.05] };
+
   var RATING_LABELS = [
     "1 – Rarely / I am still developing this",
     "2 – Occasionally / Inconsistently",
@@ -292,7 +302,7 @@ window.WORKBOOK = (function () {
       ] },
       { t: "h3", text: "Key Differences:", u: true },
       { t: "ul", items: ["Analytical profiles tend to focus on logic, data, and strategy.", "Social profiles tend to prioritize relationships, influence, and people dynamics.", "Stabilizing profiles tend to value consistency, dependability, and order.", "Persistent profiles tend to be driven by curiosity, self-direction, and intellectual independence."] },
-      { t: "img", src: "assets/img/pi-science.webp", w: 1116, h: 407, alt: "The Science Behind PI. Behavioral Assessment: Measures drives and behaviors, or, how someone gets work done. Developed for business. Bias-free. No adverse impact. Predicts Job performance." },
+      { t: "science", title: "The Science Behind PI", sub: "Behavioral Assessment", lead: "Measures drives and behaviors, or, how someone gets work done.", items: ["Developed for business", "Bias-free", "No adverse impact", "Predicts Job performance"] },
       { t: "mindwire" }
     ] },
     { id: "pi-3", title: "Primary Factors & Factor Intensity", p: [19, 20, 21], blocks: [
@@ -300,27 +310,28 @@ window.WORKBOOK = (function () {
       { t: "p", html: "The four Primary Factors measured by PI are" },
       { t: "ul", items: ["Factor A (Dominance),", "Factor B (Extraversion),", "Factor C (Patience) and", "Factor D (Formality)."] },
       { t: "p", html: "Each of the four Primary Factors is a drive to behave in a particular way, and each is different from the others. Every individual has all four Factors in their total pattern of behavior." },
-      { t: "img", src: "assets/img/pi-factors.webp", w: 1269, h: 839, alt: "The four factor scales. Dominance (A): Collaborative to Independent. Extraversion (B): Reserved to Sociable. Patience (C): Driving to Steady. Formality (D): Flexible to Precise." },
+      { t: "scales" },
       { t: "p", html: "<b>Dominance:</b> The drive to exert one’s influence on people or events<br><b>Extraversion:</b> The drive for social interaction with other people<br><b>Patience:</b> The drive for consistency and stability<br><b>Formality:</b> The drive to conform to rules and structure" },
-      { t: "img", src: "assets/img/pi-drives.webp", w: 1509, h: 1035, alt: "Why Do People Behave as They Do? People have DRIVES; Drive creates NEEDS; Response to needs BEHAVIORS. Factor Drives: Dominance (A), the drive to exert one’s influence on people / events. Extraversion (B), the drive for social interaction with other people. Patience (C), the drive for consistency and stability. Formality (D), the drive to conform to rules and structure." },
+      { t: "drives", title: "Why Do People Behave as They Do?", steps: [["People have", "DRIVES"], ["Drive creates", "NEEDS"], ["Response to needs", "BEHAVIORS"]] },
       { t: "h3", text: "Understanding Factor Intensity", center: true },
       { t: "p", html: "Predictive Index® measures the intensity of your behavioral drives, not whether you have or lack it. Intensity increases from left to right on the graph above and the graphs below—the further to the right a factor appears, the more strongly that drive tends to show up in your behavior. Additionally, when a factor is closer to the midpoint (the center triangle below), the more those needs and behaviors are expressed in a moderate way. When they are further out from mid-point the more intense those needs and behaviors are, the more consistent they are, and the more challenging they are to adjust." },
       { t: "p", html: "There are no right or wrong placements. More or less intensity does not mean something is “better” or “worse,” or that you do or do not possess a particular drive or behavior. It simply reflects how strongly that need or behavior tends to be in you." },
       { t: "p", html: "Additionally, when looking at factor combinations, which you will learn more about (for example, A > B or B > A), the first factor is more intense than the second. Furthermore, the greater the distance between two factors in a combination, the more distinct or pronounced that difference may feel in day-to-day behavior." },
       { t: "p", html: "Increase in the intensity from left to right, equals increased drive to exert influence on people or events. Therefore, increasing intensity from mid-point left in need to collaborate and to the right more need to make an impact." },
-      { t: "img", src: "assets/img/pi-bar-a.webp", w: 1580, h: 312, alt: "Increased Dominance. Left of Average: More intense need to collaborate. Right of Average: More intense need to make an impact." },
+      { t: "intensity", f: "a" },
       { t: "p", html: "Increase in the intensity from left to right, equals increased drive to have social interaction when it comes to doing the work. Therefore, increased intensity from mid-point left to think alone and to the right more need to talk it through." },
-      { t: "img", src: "assets/img/pi-bar-b.webp", w: 1651, h: 294, alt: "Increased Extraversion. Left of Average: More intense need to think it through alone. Right of Average: More intense need to talk it through w/others." },
+      { t: "intensity", f: "b" },
       { t: "p", html: "Increase in intensity from left to right, equals increased drive for consistency and stability. Therefore, increased intensity from mid-point left to have variety and lots to do, while right has more need for stability and familiarity." },
-      { t: "img", src: "assets/img/pi-bar-c.webp", w: 1580, h: 285, alt: "Increased Patience. Left of Average: More intense need for variety. Right of Average: More intense need for familiarity." },
+      { t: "intensity", f: "c" },
       { t: "p", html: "Increase in intensity from left to right, equals increased drive to conform to rules and structure. Therefore, increased intensity from mid-point left to have flexibility, while right has more need for structure and precision." },
-      { t: "img", src: "assets/img/pi-bar-d.webp", w: 1580, h: 294, alt: "Increased Formality. Left of Average: More intense need to have flexibility. Right of Average: More intense need to have structure." },
+      { t: "intensity", f: "d" },
       { t: "mindwire" }
     ] },
     { id: "pi-4", title: "Understanding Your Chart", p: [22, 23], blocks: [
       { t: "h2", text: "UNDERSTANDING YOUR CHART", center: true },
-      { t: "img", src: "assets/img/pi-self.webp", w: 1141, h: 785, alt: "Self, The real me: Your basic motivations and needs. Example chart with factors A, B, C, D and E plotted from minus 3 sigma to plus 3 sigma. Self-Concept, How you are trying to be: How you think you need to adapt or adjust in response to the current environment." },
-      { t: "img", src: "assets/img/pi-compare.webp", w: 1141, h: 616, alt: "The PI Behavioral Assessment is designed to develop two distinct types of behavioral awareness. Self: How a person describes their own workplace drives and needs. Self-Concept: How a person perceives the external demands of their work environment. Example chart overlaying Self and Self-Concept." },
+      { t: "pichart", series: ["self"], label: "Self", title: "The real me: Your basic motivations and needs" },
+      { t: "pichart", series: ["concept"], label: "Self-Concept", title: "How you are trying to be: How you think you need to adapt or adjust in response to the current environment" },
+      { t: "pichart", series: ["self", "concept"], intro: "The PI Behavioral Assessment is designed to develop two distinct types of behavioral awareness:", cards: [["Self:", "How a person describes their own workplace drives and needs."], ["Self-Concept:", "How a person perceives the external demands of their work environment."]] },
       { t: "h3", text: "How to interpret:" },
       { t: "p", html: "Ideally, your internal drives and external demands would be perfectly aligned. But workplaces are rarely that simple, and people sometimes feel expected to work in ways that run counter to their natural strengths. This chart shows how their <b>Self</b> compares to their <b>Self-Concept</b>. The closer the <b>Self</b> is to the <b>Self-Concept</b>, the easier it generally feels to perform one’s job." },
       { t: "p", html: "While the <b>Self</b> does not typically change outside of major life events, the <b>Self-Concept</b> likely will change as a person progresses in their career. Remember to interpret the <b>Self-Concept</b> in relation to the role you are in when you took the PI Behavioral Assessment." },
@@ -1061,7 +1072,7 @@ window.WORKBOOK = (function () {
   modules.push({ id: "post", title: "Post-Course ATHENA Principles Assessment", short: "Post-Course Assessment", group: "Closing assessment", late: true, steps: [
     { id: "post-1", title: "Purpose & How to Respond", p: [102, 103], blocks: [
       inst("POST-COURSE ATHENA PRINCIPLES ASSESSMENT"),
-      { t: "img", src: "assets/img/congrats.webp", w: 1700, h: 1775, alt: "Congratulations!", cls: "congrats" },
+      { t: "big", text: "Congratulations!" },
       { t: "h2", text: "Aligned to ATHENA’s Principles of Leadership", center: true },
       { t: "h3", text: "PURPOSE", u: true },
       { t: "p", html: "This self-assessment is an invitation to pause, reflect, and take an honest snapshot of how you now embody ATHENA’s Eight Principles of Leadership. It is not a test, and it is not about performance or perfection. It is about awareness and integration." },
@@ -1099,6 +1110,8 @@ window.WORKBOOK = (function () {
     eiqLabels: EIQ_LABELS,
     bands: BANDS,
     principles: PRINCIPLES,
+    piFactors: PI_FACTORS,
+    piExample: PI_EXAMPLE,
     eiq: EIQ,
     modules: modules
   };

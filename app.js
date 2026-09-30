@@ -139,6 +139,7 @@
   R.lines = function (b) { return el("div", { cls: "lines" }, b.items.map(function (i) { return el("div", { html: i }); })); };
   R.note = function (b) { return el("div", { cls: "note" + (b.light ? " light" : ""), html: b.html }); };
   R.quote = function (b) { return el("p", { cls: "pull", html: b.html }); };
+  R.big = function (b) { return el("p", { cls: "big", text: b.text }); };
   R.foot = function (b) { return el("p", { cls: "foot", html: b.text }); };
   R.lead = function (b) { return el("div", { cls: "lead" }, [el("h3", { html: b.title }), el("p", { html: b.html })]); };
   R.metaphor = function (b) { return el("div", { cls: "metaphor" }, [el("p", { cls: "metaphor-title", html: b.title }), el("p", { html: b.html })]); };
@@ -154,6 +155,94 @@
     var img = el("img", { src: b.src, alt: b.alt, width: b.w, height: b.h, loading: "lazy", decoding: "async" });
     var btn = el("button", { type: "button", cls: "zoom", "aria-label": "Enlarge image: " + b.alt.slice(0, 60), onclick: function () { openLightbox(b.src, b.alt); } }, [img]);
     return el("figure", { cls: "figure" + (b.cls ? " " + b.cls : "") }, [btn]);
+  };
+  /* ---------------------------------------------- PI diagrams (HTML/SVG) */
+  function factor(f) { return WB.piFactors.filter(function (x) { return x.f === f; })[0]; }
+  function arrowShaft(dir) { return el("span", { cls: "pi-shaft to-" + dir, "aria-hidden": "true" }); }
+  // Rising wedge split in six steps, letter in the last one; optional bell curve for the intensity bars
+  function wedge(x, curve) {
+    var id = "wc-" + x.f + (curve ? "-int" : "-drv"), steps = "";
+    for (var i = 1; i < 6; i++) { var px = i * 100; steps += "<line x1=\"" + px + "\" y1=\"" + (64 - 64 * px / 600) + "\" x2=\"" + px + "\" y2=\"80\"/>"; }
+    var bell = curve ? "<path class=\"w-bell\" clip-path=\"url(#" + id + ")\" d=\"M40 80 C190 80 215 34 300 34 C385 34 410 80 560 80 Z\"/><line class=\"w-mid\" x1=\"300\" y1=\"32\" x2=\"300\" y2=\"80\"/>" : "";
+    var shape = "0,64 600,0 600,80 0,80";
+    return el("div", { cls: "wedge", "aria-hidden": "true" }, [
+      el("div", { cls: "wedge-svg", html: "<svg viewBox=\"0 0 600 80\" preserveAspectRatio=\"none\"><defs><clipPath id=\"" + id + "\"><polygon points=\"" + shape + "\"/></clipPath></defs><polygon class=\"w-fill\" points=\"" + shape + "\"/>" + bell + "<g class=\"w-steps\">" + steps + "</g></svg>" }),
+      el("span", { cls: "wedge-letter", text: x.letter })
+    ]);
+  }
+  R.science = function (b) {
+    var icon = "<svg viewBox=\"0 0 64 64\" aria-hidden=\"true\"><rect width=\"64\" height=\"64\" rx=\"4\" fill=\"var(--bronze)\"/><g stroke=\"var(--cream)\" stroke-width=\"3\" fill=\"none\"><path d=\"M22 16 L42 26 L22 38 L42 48\"/></g><g fill=\"var(--cream)\"><circle cx=\"22\" cy=\"16\" r=\"6\"/><circle cx=\"42\" cy=\"26\" r=\"6\"/><circle cx=\"22\" cy=\"38\" r=\"6\"/><circle cx=\"42\" cy=\"48\" r=\"6\"/></g></svg>";
+    return el("figure", { cls: "dg dg-sci" }, [
+      el("p", { cls: "dg-title", text: b.title }),
+      el("div", { cls: "sci-body" }, [
+        el("div", { cls: "sci-icon", html: icon }),
+        el("div", null, [el("p", { cls: "sci-sub", text: b.sub }), el("p", { cls: "sci-lead", text: b.lead }), el("ul", { cls: "bullets" }, b.items.map(function (i) { return el("li", { text: i }); }))])
+      ])
+    ]);
+  };
+  R.scales = function () {
+    function segs(side) { return [1, 2, 3, 4].map(function (i) { return el("span", { cls: "sc-seg s" + (side === "l" ? 5 - i : i) }); }); }
+    return el("figure", { cls: "dg dg-scales" }, WB.piFactors.map(function (x) {
+      return el("div", { cls: "sc-row" }, [
+        el("p", { cls: "sc-name", text: x.name }),
+        el("div", { cls: "sc-ends" }, [el("span", { text: x.low }), el("span", { text: x.high })]),
+        el("div", { cls: "sc-line", "aria-hidden": "true" }, [el("span", { cls: "sc-head l" })].concat(segs("l"), [el("span", { cls: "sc-dot", text: x.letter })], segs("r"), [el("span", { cls: "sc-head r" })]))
+      ]);
+    }));
+  };
+  R.drives = function (b) {
+    return el("figure", { cls: "dg dg-drives" }, [
+      el("p", { cls: "dg-title", text: b.title }),
+      el("ol", { cls: "chev" }, b.steps.map(function (s) { return el("li", null, [el("small", { text: s[0] }), el("b", { text: s[1] })]); })),
+      el("div", { cls: "fd" }, [el("p", { cls: "fd-title", text: "Factor Drives" })].concat(WB.piFactors.map(function (x) {
+        return el("div", { cls: "fd-row f-" + x.f }, [
+          el("div", { cls: "fd-bar" }, [el("p", { cls: "fd-name", text: x.name }), wedge(x, false)]),
+          el("p", { cls: "fd-text", text: x.drive })
+        ]);
+      })))
+    ]);
+  };
+  R.intensity = function (b) {
+    var x = factor(b.f);
+    return el("figure", { cls: "dg dg-int f-" + x.f }, [
+      el("p", { cls: "int-up" }, [el("span", { text: "Increased " + x.name }), arrowShaft("right")]),
+      wedge(x, true),
+      el("span", { cls: "int-mark", "aria-hidden": "true" }),
+      el("div", { cls: "int-row" }, [el("span", { cls: "int-t l", text: x.left }), arrowShaft("left"), el("span", { cls: "int-avg", text: "Average" }), arrowShaft("right"), el("span", { cls: "int-t r", text: x.right })])
+    ]);
+  };
+  // Geometry comes from CSS vars (--rh row height, --tc track centre) so the phone layout can stack labels over each track
+  R.pichart = function (b) {
+    var ex = WB.piExample, both = b.series.length > 1;
+    var rows = WB.piFactors.map(function (x) { return [x.low, x.high]; }).concat([ex.e]);
+    function pct(v) { return ((v + 3) / 6 * 100).toFixed(2) + "%"; }
+    function isOn(i, col) { return !both && (ex[b.series[0]][i] < 0 ? 0 : 1) === col; }
+    function lab(i, col) { return el("span", { cls: isOn(i, col) ? "on" : null, text: rows[i][col] }); }
+    function sideCol(col) { return el("div", { cls: "ch-lab " + (col ? "r" : "l") }, [0, 1, 2, 3].map(function (i) { return lab(i, col); }).concat([el("span", { cls: "ch-gap" }), lab(4, col)])); }
+    var plot = el("div", { cls: "ch-plot" });
+    rows.forEach(function (_, i) {
+      plot.appendChild(el("div", { cls: "ch-inl", style: "--i:" + i }, [lab(i, 0), lab(i, 1)]));
+      plot.appendChild(el("span", { cls: i < 4 ? "ch-track" : "ch-eline", style: "--i:" + i }));
+    });
+    var svg = "";
+    b.series.forEach(function (s) {
+      for (var i = 0; i < 3; i++) svg += "<line class=\"ch-link " + s + "\" x1=\"" + ((ex[s][i] + 3) / 6 * 100) + "\" y1=\"" + i + "\" x2=\"" + ((ex[s][i + 1] + 3) / 6 * 100) + "\" y2=\"" + (i + 1) + "\"/>";
+    });
+    plot.appendChild(el("div", { cls: "ch-svg", html: "<svg viewBox=\"0 0 100 3\" preserveAspectRatio=\"none\" aria-hidden=\"true\">" + svg + "</svg>" }));
+    plot.appendChild(el("div", { cls: "ch-axis" }, [-3, -2, -1, 0, 1, 2, 3].map(function (t) {
+      return el("span", { style: "left:" + pct(t), text: t === 0 ? "0" : (t > 0 ? "+" : "−") + Math.abs(t) + "σ" });
+    })));
+    b.series.slice().reverse().forEach(function (s) {
+      ex[s].forEach(function (v, i) { plot.appendChild(el("span", { cls: "ch-mk " + s, style: "--i:" + i + ";left:" + pct(v), text: i < 4 ? WB.piFactors[i].letter : "E" })); });
+    });
+    var desc = b.series.map(function (s) { return (s === "self" ? "Self" : "Self-Concept") + ": " + WB.piFactors.map(function (x, i) { return x.letter + " " + (ex[s][i] > 0 ? "+" : "") + ex[s][i] + "σ"; }).join(", ") + ", E " + ex[s][4] + "σ"; }).join(". ");
+    var kids = [];
+    if (b.intro) kids.push(el("p", { cls: "ch-intro", text: b.intro }));
+    if (b.cards) kids.push(el("div", { cls: "ch-cards" }, b.cards.map(function (c) { return el("p", null, [el("b", { text: c[0] }), " " + c[1]]); })));
+    if (b.label) kids.push(el("div", { cls: "ch-head" }, [el("p", { cls: "ch-label", text: b.label }), el("p", { cls: "ch-title", text: b.title })]));
+    kids.push(el("div", { cls: "ch-grid", role: "img", "aria-label": "Example PI chart. " + desc + "." }, [sideCol(0), plot, sideCol(1)]));
+    if (both) kids.push(el("p", { cls: "ch-legend" }, [el("span", { cls: "ch-mk self" }), " = Self", el("span", { cls: "ch-mk concept" }), " = Self-Concept"]));
+    return el("figure", { cls: "dg dg-chart" + (both ? " both" : "") }, kids);
   };
   R.outline = function (b) {
     return el("figure", { cls: "outline" }, [
@@ -223,7 +312,7 @@
     ]);
     var card = el("div", { cls: "pi-card" }, [tabs, el("div", { cls: "pi-cols" }, [col("STRENGTHS", b.strengths), col("CAUTIONS", b.cautions)]), col("SELF-COACHING TIPS", b.tips, "tips")]);
     // Full-width arrow over the tabs, tip pointing toward EXTREMELY with the label at that end
-    var shaft = el("span", { cls: "pi-shaft", "aria-hidden": "true" });
+    var shaft = arrowShaft(b.side.toLowerCase());
     var label = el("span", { cls: "pi-arrow-t", text: b.arrow });
     var arrow = el("p", { cls: "pi-arrow" }, b.side === "Left" ? [label, shaft] : [shaft, label]);
     return el("section", { cls: "picard side-" + b.side.toLowerCase() }, [
