@@ -143,9 +143,8 @@
   R.foot = function (b) { return el("p", { cls: "foot", html: b.text }); };
   R.lead = function (b) { return el("div", { cls: "lead" }, [el("h3", { html: b.title }), el("p", { html: b.html })]); };
   R.metaphor = function (b) { return el("div", { cls: "metaphor" }, [el("p", { cls: "metaphor-title", html: b.title }), el("p", { html: b.html })]); };
-  R.mindwire = function () { return el("div", { cls: "mindwire" }, [el("img", { src: "assets/icons/mindwire.webp", alt: "MindWire", width: 396, height: 126, loading: "lazy" })]); };
   R.partners = function (b) {
-    return el("div", { cls: "partners" }, [
+    return el("div", { cls: "partners" + (b.pos ? " partners-" + b.pos : "") }, [
       el("img", { src: "assets/icons/mindwire.webp", alt: "MindWire", cls: "partners-mw", width: 396, height: 126, loading: "lazy" }),
       el("span", { cls: "partners-sep", "aria-hidden": "true" }),
       el("img", { src: "assets/icons/pi.png?v=2", alt: "Predictive Index", cls: "partners-pi", width: 192, height: 192, loading: "lazy" })
@@ -260,10 +259,11 @@
   };
   R.panel = function (b) {
     var head = [];
-    if (b.tone === "pi") head.push(el("img", { src: "assets/icons/pi.png?v=2", alt: "Predictive Index", cls: "panel-pi-logo", width: 34, height: 34 }));
     head.push(el("p", { cls: "panel-title", html: b.title }));
     if (b.sub) head.push(el("p", { cls: "panel-sub", html: b.sub }));
-    var box = el("section", { cls: "panel panel-" + b.tone }, [el("div", { cls: "panel-head" }, head)]);
+    var box = el("section", { cls: "panel panel-" + b.tone }, [b.tone === "pi"
+      ? el("div", { cls: "panel-head has-partners" }, [el("div", null, head), R.partners(b)])
+      : el("div", { cls: "panel-head" }, head)]);
     render(b.blocks, box);
     return box;
   };
@@ -567,8 +567,10 @@
         var art = el("article", { cls: "step", id: "step-" + s.id, hidden: true, "aria-labelledby": "h-" + s.id });
         var paper = el("div", { cls: "paper" });
         var blocks = s.blocks;
-        // Every Predictive Index section closes with the MindWire + PI lockup
-        if (m.id === "pi") blocks = blocks.filter(function (b) { return b.t !== "mindwire"; }).concat([{ t: "partners" }]);
+        // Every Predictive Index section opens with the MindWire + PI lockup, top right (beside the banner when there is one)
+        if (m.id === "pi") { blocks = blocks.filter(function (b) { return b.t !== "mindwire"; }); if (!blocks.some(function (b) { return b.partners; })) blocks = [{ t: "partners", pos: "top" }].concat(blocks); }
+        // Elsewhere the lockup sits in the PI panel header instead of a loose MindWire logo
+        else blocks = blocks.filter(function (b) { return b.t !== "mindwire"; });
         render(blocks, paper);
         art.appendChild(paper);
         host.appendChild(art);

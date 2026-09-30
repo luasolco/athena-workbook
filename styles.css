@@ -198,9 +198,8 @@ main { padding: 56px clamp(16px, 5vw, 72px) 96px; min-width: 0; outline: none; }
 .note::after { content: ""; position: absolute; right: 22px; bottom: 22px; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 17px solid var(--orange); }
 .note.light { background: var(--sand); color: var(--ink) !important; font: 400 16.5px/1.75 var(--sans); text-align: left; padding: 26px 28px; border-left: 2px solid var(--bronze); }
 .note.light::after { display: none; }
-.mindwire { display: flex; justify-content: flex-end; align-items: center; gap: 10px; margin: 36px 0 0 !important; max-width: none !important; }
-.mindwire img { width: 160px; height: auto; mix-blend-mode: multiply; }
 .partners { display: flex; justify-content: flex-end; align-items: center; gap: 18px; max-width: none !important; margin: 48px 0 0 !important; }
+.partners.partners-top { margin: 0 0 28px !important; }
 .partners-mw { width: 138px; height: auto; mix-blend-mode: multiply; }
 .partners-pi { width: 40px; height: 40px; }
 .partners-sep { width: 1px; height: 32px; background: var(--line); }
@@ -233,6 +232,7 @@ main { padding: 56px clamp(16px, 5vw, 72px) 96px; min-width: 0; outline: none; }
 .chapter.solo .chapter-title { letter-spacing: -.01em; font-size: clamp(32px, 4vw, 46px); font-weight: 300; }
 .chapter-credit { margin: 14px 0 0 !important; font: 500 11px/1.7 var(--display); letter-spacing: .14em; text-transform: uppercase; color: var(--gray) !important; max-width: 640px; }
 .chapter.has-partners .partners { position: absolute; right: 0; top: 0; bottom: 30px; margin: 0 !important; }
+.chapter.has-partners .chapter-title { padding-right: 240px; }
 .chapter::after { content: ""; position: absolute; left: 0; bottom: -1px; width: 64px; height: 1px; background: var(--bronze); }
 
 /* ------------------------------------------------ principle opener */
@@ -254,9 +254,9 @@ main { padding: 56px clamp(16px, 5vw, 72px) 96px; min-width: 0; outline: none; }
 .panel-head { margin-bottom: 22px; }
 .panel .panel-title { font: 500 11.5px/1.6 var(--display) !important; letter-spacing: .2em; text-transform: uppercase; margin: 0 0 6px !important; }
 .panel .panel-sub { font: 400 clamp(22px, 2.6vw, 28px)/1.25 var(--serif) !important; margin: 0 !important; }
-.panel-pi-logo { position: absolute; right: clamp(26px, 4vw, 44px); top: clamp(26px, 4vw, 44px); width: 30px; height: 30px; border-radius: 50%; }
 .panel.panel-pi { background: var(--sand); border-top: 2px solid var(--bronze); }
-.panel.panel-pi .panel-head { padding-right: 44px; }
+.panel-head.has-partners { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+.panel-head.has-partners .partners { flex: none; margin: 0 !important; }
 .panel.panel-pi .panel-title:only-of-type { font: 400 clamp(22px, 2.6vw, 28px)/1.25 var(--serif) !important; letter-spacing: -.005em; text-transform: none; }
 .panel-orange { border: 1px solid var(--line-2); border-top: 2px solid var(--orange); background: var(--cream); }
 .panel-map { background: var(--blue); color: var(--cream); }
@@ -668,6 +668,8 @@ main { padding: 56px clamp(16px, 5vw, 72px) 96px; min-width: 0; outline: none; }
 }
 @media (max-width: 760px) {
   .chapter.has-partners .partners { position: static; justify-content: flex-start; margin: 22px 0 0 !important; }
+  .chapter.has-partners .chapter-title { padding-right: 0; }
+  .panel-head.has-partners { flex-direction: column; gap: 14px; }
   body { font-size: 16.5px; }
   .topbar { padding: 0 12px; gap: 10px; }
   .brand span, .brand-sep, .tp-label, .top-progress .tp-track { display: none; }
@@ -691,7 +693,6 @@ main { padding: 56px clamp(16px, 5vw, 72px) 96px; min-width: 0; outline: none; }
   .opener-icon { width: 104px; height: 104px; }
   .opener-icon img { width: 80px; height: 80px; }
   .panel { margin-left: -16px; margin-right: -16px; padding: 28px 16px; }
-  .panel-pi-logo { right: 16px; top: 28px; }
   .note { padding: 36px 22px; margin-left: -16px; margin-right: -16px; }
   .defs { grid-template-columns: minmax(0, 1fr); }
   .outline { margin-left: -16px; margin-right: -16px; }
