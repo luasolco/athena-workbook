@@ -139,7 +139,7 @@ window.WORKBOOK = (function () {
   ];
 
   /* Reusable pieces ------------------------------------------------------ */
-  function inst(sub) { return { t: "banner", title: "THE ATHENA<br>LEADERSHIP INSTITUTE", sub: sub }; }
+  function inst(sub) { return { t: "banner", title: "ATHENA<br>LEADERSHIP INSTITUTE", sub: sub }; }
 
   var ASSESS_HOW = [
     { t: "h3", text: "HOW TO RESPOND", u: true },
@@ -249,7 +249,7 @@ window.WORKBOOK = (function () {
 
   modules.push({ id: "pi", title: "Predictive Index", short: "Predictive Index", group: "Predictive Index", steps: [
     { id: "pi-1", title: "Predictive Index® Overview", p: [16], blocks: [
-      Object.assign(inst("PREDICTIVE INDEX"), { pi: true }),
+      Object.assign(inst("PREDICTIVE INDEX"), { partners: true }),
       { t: "h2", text: "Predictive Index® Overview", center: true },
       { t: "p", html: "ATHENA International is proud to partner with MindWire® to offer you access to the Predictive Index® (PI) behavioral assessment." },
       { t: "p", html: "On a personal level, PI provides insight into how you naturally think, communicate, and respond to your environment. It helps you better understand your authentic strengths, potential challenges, and motivating needs—supporting stronger self-awareness and more effective relationships." },

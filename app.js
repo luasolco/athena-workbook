@@ -119,10 +119,10 @@
   R.banner = function (b) {
     var inst = /LEADERSHIP INSTITUTE/.test(b.title);
     if (inst) {
-      return el("header", { cls: "chapter" }, [
+      return el("header", { cls: "chapter" + (b.partners ? " has-partners" : "") }, [
         el("p", { cls: "chapter-eyebrow" }, [el("span", { html: b.title.replace(/<br\s*\/?>/g, " ") })]),
         el("h2", { cls: "chapter-title", id: "h-" + ctx.step.id, html: b.sub }),
-        b.pi ? el("p", { cls: "chapter-pi" }, [el("img", { src: "assets/icons/pi.png?v=2", alt: "Predictive Index", width: 26, height: 26 })]) : null
+        b.partners ? R.partners(b) : null
       ]);
     }
     return el("header", { cls: "chapter solo" }, [
@@ -143,6 +143,13 @@
   R.lead = function (b) { return el("div", { cls: "lead" }, [el("h3", { html: b.title }), el("p", { html: b.html })]); };
   R.metaphor = function (b) { return el("div", { cls: "metaphor" }, [el("p", { cls: "metaphor-title", html: b.title }), el("p", { html: b.html })]); };
   R.mindwire = function () { return el("div", { cls: "mindwire" }, [el("img", { src: "assets/icons/mindwire.webp", alt: "MindWire", width: 396, height: 126, loading: "lazy" })]); };
+  R.partners = function (b) {
+    return el("div", { cls: "partners" }, [
+      el("img", { src: "assets/icons/mindwire.webp", alt: "MindWire", cls: "partners-mw", width: 396, height: 126, loading: "lazy" }),
+      el("span", { cls: "partners-sep", "aria-hidden": "true" }),
+      el("img", { src: "assets/icons/pi.png?v=2", alt: "Predictive Index", cls: "partners-pi", width: 192, height: 192, loading: "lazy" })
+    ]);
+  };
   R.img = function (b) {
     var img = el("img", { src: b.src, alt: b.alt, width: b.w, height: b.h, loading: "lazy", decoding: "async" });
     var btn = el("button", { type: "button", cls: "zoom", "aria-label": "Enlarge image: " + b.alt.slice(0, 60), onclick: function () { openLightbox(b.src, b.alt); } }, [img]);
@@ -215,9 +222,12 @@
       el("p", { html: "Obviously not your results. However, the outcomes are the same if your “" + b.letter + "” falls to the <span class=\"em\">" + b.side + "</span> of Mid-point on the graph." })
     ]);
     var card = el("div", { cls: "pi-card" }, [tabs, el("div", { cls: "pi-cols" }, [col("STRENGTHS", b.strengths), col("CAUTIONS", b.cautions)]), col("SELF-COACHING TIPS", b.tips, "tips")]);
+    // Full-width arrow over the tabs, tip pointing toward EXTREMELY with the label at that end
+    var shaft = el("span", { cls: "pi-shaft", "aria-hidden": "true" });
+    var label = el("span", { cls: "pi-arrow-t", text: b.arrow });
+    var arrow = el("p", { cls: "pi-arrow" }, b.side === "Left" ? [label, shaft] : [shaft, label]);
     return el("section", { cls: "picard side-" + b.side.toLowerCase() }, [
-      el("p", { cls: "pi-arrow", html: (b.side === "Left" ? "<span aria-hidden=\"true\">←</span> " : "") + b.arrow + (b.side === "Right" ? " <span aria-hidden=\"true\">→</span>" : "") }),
-      el("div", { cls: "picard-grid" }, [card, side])
+      el("div", { cls: "picard-grid" }, [el("div", { cls: "pi-main" }, [arrow, card]), side])
     ]);
   };
   R.table = function (b) {
@@ -407,7 +417,7 @@
       var sec = el("section", { cls: "eiq-group" });
       sec.appendChild(el("h3", { cls: "eiq-title", html: "<b>" + g.group + "</b> - " + (g.strong ? "<b>" + g.sub + "</b>" : g.sub) }));
       var t = el("table", { cls: "eiq-table" });
-      t.appendChild(el("thead", null, [el("tr", null, (post ? ["Skill", "Behavior Indicators", "Pre", "Post", "Progress Reflection"] : ["Skill", "Behavior Indicators", "Pre", "Reflection"]).map(function (h) { return el("th", { scope: "col", html: "<u>" + h + "</u>" }); }))]));
+      t.appendChild(el("thead", null, [el("tr", null, (post ? ["Skill", "Behavior Indicators", "Pre", "Post", "Progress Reflection"] : ["Skill", "Behavior Indicators", "Rating", "Reflection"]).map(function (h) { return el("th", { scope: "col", html: "<u>" + h + "</u>" }); }))]));
       var tb = el("tbody");
       g.skills.forEach(function (s, si) {
         var base = "e." + gi + "." + si;
@@ -434,7 +444,7 @@
           cells.push(el("td", { cls: "rt", "data-h": "Post" }, [sel("post")]));
           cells.push(el("td", { cls: "pr" }, [note]));
         } else {
-          cells.push(el("td", { cls: "rt", "data-h": "Pre" }, [sel("pre")]));
+          cells.push(el("td", { cls: "rt", "data-h": "Rating" }, [sel("pre")]));
           cells.push(el("td", { cls: "pr" }, [note]));
         }
         tb.appendChild(el("tr", null, cells));
@@ -467,7 +477,10 @@
         ctx = { step: s, n: 0 };
         var art = el("article", { cls: "step", id: "step-" + s.id, hidden: true, "aria-labelledby": "h-" + s.id });
         var paper = el("div", { cls: "paper" });
-        render(s.blocks, paper);
+        var blocks = s.blocks;
+        // Every Predictive Index section closes with the MindWire + PI lockup
+        if (m.id === "pi") blocks = blocks.filter(function (b) { return b.t !== "mindwire"; }).concat([{ t: "partners" }]);
+        render(blocks, paper);
         art.appendChild(paper);
         host.appendChild(art);
         var req = $$("[data-req=\"1\"]", art).map(function (n) { return { key: n.getAttribute("data-key"), kind: n.getAttribute("data-kind"), min: Number(n.getAttribute("data-min") || 1) }; });
@@ -625,9 +638,11 @@
     var pr = pages.length > 1 ? "Workbook pages " + pages[0] + "–" + pages[pages.length - 1] : "Workbook page " + pages[0];
     var c = stepCounts(st);
     var status = stepStatus(st);
-    var reqText = c.total ? c.done + " of " + c.total + " responses" : "Reading";
+    var reqText = c.done + " of " + c.total + " responses";
     head.innerHTML = "";
     head.classList.toggle("has-opener", st.s.blocks[0].t === "divider");
+    // Temporary PDF page reference for the content review, remove once ATHENA signs off
+    head.appendChild(el("p", { cls: "review-pages", text: pr }));
     head.appendChild(el("p", { cls: "kicker" }, [el("span", { text: st.m.group })]));
     var h1 = el("h1", { id: "step-title", tabindex: "-1", html: st.m.title });
     if (st.m.principle) head.appendChild(el("div", { cls: "head-row" }, [el("img", { src: "assets/icons/principles/" + st.m.principle + ".webp", alt: "", cls: "head-icon", width: 72, height: 72 }), h1]));
@@ -642,9 +657,9 @@
     }));
     head.appendChild(tabs);
     var on = $(".steptab.on", tabs); if (on) requestAnimationFrame(function () { tabs.scrollLeft = on.parentNode.offsetLeft - 16; });
-    head.appendChild(el("div", { cls: "stepmeta" }, [
-      el("span", { cls: "stepstat s-" + status, html: ICON[status] + " " + STATUS_TEXT[status] + (c.total ? " · " + reqText : "") }),
-      el("span", { cls: "pages", text: pr })
+    // Status only on steps with something to fill in; reading-only steps skip it
+    if (c.total) head.appendChild(el("div", { cls: "stepmeta" }, [
+      el("span", { cls: "stepstat s-" + status, html: ICON[status] + " " + STATUS_TEXT[status] + " · " + reqText })
     ]));
   }
   function paintPager(st) {
@@ -827,7 +842,21 @@
       stb.appendChild(el("tr", null, [el("td", { text: p.name }), el("td", { text: t(a) }), el("td", { text: t(b) }), el("td", { text: a.total !== null && b.total !== null ? ((b.total - a.total > 0 ? "+" : "") + (b.total - a.total)) : "–" })]));
     });
     st.appendChild(stb);
-    root.appendChild(el("section", { cls: "ps-sec" }, [el("h2", { text: "ATHENA Principles Assessment" }), st, el("p", { cls: "muted small", text: WB.bands.map(function (b) { return b.text; }).join("  ·  ") })]));
+    var asec = el("section", { cls: "ps-sec" }, [el("h2", { text: "ATHENA Principles Assessment" }), st, el("p", { cls: "muted small", text: WB.bands.map(function (b) { return b.text; }).join("  ·  ") })]);
+    // Every rated statement, Pre and Post side by side
+    var rated = false;
+    WB.principles.forEach(function (p) {
+      var rt = el("tbody");
+      p.statements.forEach(function (s, i) {
+        var a = state.f["a.pre." + p.id + "." + i], b = state.f["a.post." + p.id + "." + i];
+        if (a || b) rt.appendChild(el("tr", null, [el("td", { text: String(i + 1) }), el("td", { text: s }), el("td", { text: a ? String(a) : "–" }), el("td", { text: b ? String(b) : "–" })]));
+      });
+      if (!rt.children.length) return;
+      if (!rated) { rated = true; asec.appendChild(el("p", { cls: "muted small", text: WB.ratingLabels.join("  ·  ") })); }
+      asec.appendChild(el("h3", { text: p.name }));
+      asec.appendChild(el("table", { cls: "ps-table ps-rate" }, [el("thead", null, [el("tr", null, ["#", "Statement", "Pre", "Post"].map(function (h) { return el("th", { text: h }); }))]), rt]));
+    });
+    root.appendChild(asec);
 
     // Module answers
     WB.modules.forEach(function (m, mi) {
@@ -839,7 +868,7 @@
         if (eq) {
           var isPost = eq.getAttribute("data-phase") === "post";
           var t = el("table", { cls: "ps-table" });
-          t.appendChild(el("thead", null, [el("tr", null, (isPost ? ["Skill", "Pre", "Post", "Progress Reflection"] : ["Skill", "Pre", "Reflection"]).map(function (h) { return el("th", { text: h }); }))]));
+          t.appendChild(el("thead", null, [el("tr", null, (isPost ? ["Skill", "Pre", "Post", "Progress Reflection"] : ["Skill", "Rating", "Reflection"]).map(function (h) { return el("th", { text: h }); }))]));
           var tb = el("tbody"), rows = 0;
           WB.eiq.forEach(function (g, gi) { g.skills.forEach(function (s, si) {
             var b = "e." + gi + "." + si, a1 = state.f[b + ".pre"], a2 = state.f[b + ".post"], n = state.f[b + ".note"];

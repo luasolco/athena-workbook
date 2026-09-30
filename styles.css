@@ -162,12 +162,12 @@ main { padding: 56px clamp(16px, 5vw, 72px) 96px; min-width: 0; outline: none; }
 .st-num { font: italic 400 15px var(--serif); color: var(--bronze); }
 .st-state { width: 13px; height: 13px; display: inline-flex; color: var(--line-2); }
 .steptab.s-partial .st-state, .steptab.s-complete .st-state { color: var(--bronze); }
+.review-pages { margin: 0 0 14px; font: 600 12.5px var(--sans); letter-spacing: .04em; color: #D7191F; }
 .stepmeta { display: flex; flex-wrap: wrap; gap: 6px 22px; align-items: center; font: 400 12.5px var(--sans); color: var(--gray); }
 .stepstat { display: inline-flex; align-items: center; gap: 8px; font: 500 11.5px var(--display); letter-spacing: .12em; text-transform: uppercase; color: var(--blue); }
 .stepstat svg { width: 13px; height: 13px; }
 .stepstat.s-empty svg { color: var(--line-2); }
 .stepstat.s-partial svg, .stepstat.s-complete svg { color: var(--bronze); }
-.pages { letter-spacing: .02em; }
 
 /* --------------------------------------------------- reading typography */
 .paper { position: relative; }
@@ -200,6 +200,10 @@ main { padding: 56px clamp(16px, 5vw, 72px) 96px; min-width: 0; outline: none; }
 .note.light::after { display: none; }
 .mindwire { display: flex; justify-content: flex-end; align-items: center; gap: 10px; margin: 36px 0 0 !important; max-width: none !important; }
 .mindwire img { width: 160px; height: auto; mix-blend-mode: multiply; }
+.partners { display: flex; justify-content: flex-end; align-items: center; gap: 18px; max-width: none !important; margin: 48px 0 0 !important; }
+.partners-mw { width: 138px; height: auto; mix-blend-mode: multiply; }
+.partners-pi { width: 40px; height: 40px; }
+.partners-sep { width: 1px; height: 32px; background: var(--line); }
 .figure { margin: 28px 0 36px; }
 .zoom { position: relative; display: block; width: 100%; padding: 0; border: 1px solid var(--line); background: #fff; cursor: zoom-in; }
 .zoom img { display: block; width: 100%; }
@@ -229,8 +233,7 @@ main { padding: 56px clamp(16px, 5vw, 72px) 96px; min-width: 0; outline: none; }
 .paper .chapter-title { margin: 0; font: 400 clamp(28px, 3.6vw, 40px)/1.15 var(--serif); letter-spacing: .03em; color: var(--blue); }
 .chapter.solo .chapter-title { letter-spacing: -.01em; font-size: clamp(32px, 4vw, 46px); font-weight: 300; }
 .chapter-credit { margin: 14px 0 0 !important; font: 500 11px/1.7 var(--display); letter-spacing: .14em; text-transform: uppercase; color: var(--gray) !important; max-width: 640px; }
-.chapter-pi { position: absolute; right: 0; top: 0; margin: 0 !important; }
-.chapter-pi img { width: 26px; height: 26px; border-radius: 50%; }
+.chapter.has-partners .partners { position: absolute; right: 0; top: 0; bottom: 30px; margin: 0 !important; }
 .chapter::after { content: ""; position: absolute; left: 0; bottom: -1px; width: 64px; height: 1px; background: var(--bronze); }
 
 /* ------------------------------------------------ principle opener */
@@ -415,8 +418,13 @@ main { padding: 56px clamp(16px, 5vw, 72px) 96px; min-width: 0; outline: none; }
 
 /* Strengths / cautions cards */
 .picard { margin: 0 0 56px; padding-top: 30px; border-top: 1px solid var(--line); }
-.pi-arrow { font: 500 11.5px var(--display) !important; letter-spacing: .16em; text-transform: uppercase; margin-bottom: 18px !important; }
-.pi-arrow span { color: var(--orange); font-family: var(--sans); font-size: 16px; letter-spacing: 0; }
+.pi-arrow { display: flex; align-items: center; gap: 14px; margin: 0 0 14px !important; }
+.pi-arrow-t { flex: 0 1 auto; max-width: 78%; font: 500 11.5px/1.4 var(--display); letter-spacing: .16em; text-transform: uppercase; color: var(--blue); }
+.pi-shaft { position: relative; flex: 1; min-width: 60px; height: 3px; background: var(--orange); }
+.pi-shaft::before { content: ""; position: absolute; top: 50%; width: 12px; height: 12px; border: solid var(--orange); border-width: 0 0 3px 3px; }
+.side-left .pi-shaft::before { left: 1px; transform: translateY(-50%) rotate(45deg); }
+.side-right .pi-shaft::before { right: 1px; transform: translateY(-50%) rotate(-135deg); }
+.side-right .pi-arrow-t { text-align: right; }
 .picard-grid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 36px; align-items: start; }
 .picard.side-right .picard-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr); }
 .picard.side-right .pi-side { order: -1; }
@@ -550,6 +558,7 @@ main { padding: 56px clamp(16px, 5vw, 72px) 96px; min-width: 0; outline: none; }
   .drawer-open .scrim { display: block; position: fixed; inset: var(--top) 0 0 0; background: color-mix(in srgb, var(--blue) 40%, transparent); z-index: 35; }
 }
 @media (max-width: 760px) {
+  .chapter.has-partners .partners { position: static; justify-content: flex-start; margin: 22px 0 0 !important; }
   body { font-size: 16.5px; }
   .topbar { padding: 0 12px; gap: 10px; }
   .brand span, .brand-sep, .tp-label, .top-progress .tp-track { display: none; }
@@ -587,6 +596,7 @@ main { padding: 56px clamp(16px, 5vw, 72px) 96px; min-width: 0; outline: none; }
   .picard.side-right .pi-side { order: 0; }
   .pi-cols { grid-template-columns: minmax(0, 1fr); padding: 26px 16px 4px; }
   .pi-tabs { padding: 12px 12px 0; }
+  .pi-arrow-t { max-width: 56%; }
   .pi-col.tips { margin: 6px 16px 0; }
   .assess-head { grid-template-columns: minmax(0, 1fr); gap: 10px; }
   .assess-score { text-align: left; }
@@ -633,6 +643,9 @@ main { padding: 56px clamp(16px, 5vw, 72px) 96px; min-width: 0; outline: none; }
   .ps-table { width: 100%; border-collapse: collapse; font: 400 9pt "Open Sauce One", sans-serif; margin: 4px 0 8px; }
   .ps-table th, .ps-table td { border-bottom: 1px solid #d7d3c4; padding: 5px 8px 5px 0; text-align: left; vertical-align: top; }
   .ps-table th { font: 500 7pt "Poppins", sans-serif; letter-spacing: .14em; text-transform: uppercase; border-bottom-color: #0C2E40; }
+  .ps-rate { break-inside: avoid; }
+  .ps-rate td:first-child, .ps-rate th:first-child { width: 22px; }
+  .ps-rate td:nth-child(n+3), .ps-rate th:nth-child(n+3) { width: 44px; text-align: center; padding-right: 0; }
   .qa { break-inside: avoid; margin: 0 0 10px; padding-left: 10px; border-left: 1px solid #d7d3c4; }
   .qa.commit { border-left: 2px solid #A4853E; }
   .qa-q { margin: 0; font: 400 10.5pt/1.4 "Source Serif 4", Georgia, serif; }
