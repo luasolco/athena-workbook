@@ -3,6 +3,22 @@
 <meta name="robots" content="noindex">
 <title>Moved</title>
 <link rel="canonical" href="https://leadership.athenainternational.org/workbook/">
-<meta http-equiv="refresh" content="0; url=https://leadership.athenainternational.org/workbook/">
-<script>location.replace("https://leadership.athenainternational.org/workbook/"+location.pathname.replace(/^\/athena-workbook\//,"")+location.search+location.hash);</script>
-</head><body><p>This page has moved to <a href="https://leadership.athenainternational.org/workbook/">https://leadership.athenainternational.org/workbook/</a>.</p></body></html>
+<script>
+// The workbook moved. Answers live in this browser's localStorage, which is tied to
+// this address, so pass them along in the URL fragment (never sent to a server).
+(function () {
+  var to = "https://leadership.athenainternational.org/workbook/";
+  try {
+    var s = localStorage.getItem("athena-lc-workbook:v1");
+    var g = localStorage.getItem("athena-lc-access");
+    if (s || g) {
+      var p = JSON.stringify({ s: s, g: g, h: location.hash || "" });
+      location.replace(to + "#carry=" + encodeURIComponent(btoa(unescape(encodeURIComponent(p)))));
+      return;
+    }
+  } catch (e) { /* storage blocked: plain redirect */ }
+  location.replace(to + location.hash);
+})();
+</script>
+<noscript><meta http-equiv="refresh" content="0; url=https://leadership.athenainternational.org/workbook/"></noscript>
+</head><body><p>This workbook has moved to <a href="https://leadership.athenainternational.org/workbook/">leadership.athenainternational.org/workbook</a>.</p></body></html>
